@@ -1,3 +1,4 @@
+import { Account, Client, ID } from "appwrite";
 import envVariables from "../constants/envVariables.js";
 
 class AuthService {
@@ -5,25 +6,62 @@ class AuthService {
   account;
 
   constructor() {
-    this.client = "";
-    this.account = "";
-    console.log(envVariables);
+    this.client = new Client();
+    this.client
+      .setEndpoint(envVariables.appwriteURL)
+      .setProject(envVariables.appwriteProjectId);
+
+    this.account = new Account(this.client);
   }
 
-  async createAccount() {
-    console.log("\nInside createAccount!");
+  async createAccount({ email, password, name }) {
+    try {
+      const user = await this.account.create(ID.unique(), email, password, name);
+
+      if (!user) throw new Error("Something went wrong while creating user!");
+
+      await this.login(email, password);
+      return user;
+    } catch (error) {
+      console.log(`Error :: Appwrite:: createAccount :: ${error}`);
+      return false;
+    }
   }
 
-  async login() {
-    console.log("\nInside login!");
+  async login(email, password) {
+    try {
+      const session = await this.account.createEmailPasswordSession(
+        email,
+        password
+      );
+
+      if (!session)
+        throw new Error("Something went wrong while logging-in user!");
+
+      return session;
+    } catch (error) {
+      console.log(`Error :: Appwrite:: login :: ${error}`);
+      return null;
+    }
   }
 
   async logout() {
-    console.log("\nInside logout!");
+    try {
+      await this.account.deleteSessions();
+      return true;
+    } catch (error) {
+      console.log(`Error :: Appwrite:: logout :: ${error}`);
+      return false;
+    }
   }
 
-  async getUserAccount() {
-    console.log("\nInside getUserAccount!");
+  async getCurrentUser() {
+    try {
+      return await this.account.get();
+    } catch (error) {
+      console.log(`Error :: Appwrite:: getCurrentUser :: ${error}`);
+      return null;
+    }
   }
 }
 
