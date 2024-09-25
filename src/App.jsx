@@ -1,19 +1,31 @@
-import envVariables from "./constants/envVariables.js"
-import "./App.css";
+import { useEffect, useState } from "react";
+import authService from "./services/auth.services.js";
+import { useDispatch } from "react-redux";
+import { login, logout } from "./store/features/auth.slice.js";
+import { Outlet } from "react-router-dom";
+import { Footer, Header, LoadingPage } from "./components/index.js";
 
 function App() {
-  return (
-    <>
-      <h1>Welcome to the...</h1>
-      <h2>{import.meta.env.VITE_CONSTANT ?? `Could not fetch Vite-constant`}</h2>
-      <h2>{import.meta.env.RANDOM_CONSTANT ?? `Could not fetch Random-constant!`}</h2>
+  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
-      <h1>Env</h1>
-      <h2>{envVariables.appwriteURL}</h2>
-      <h2>{envVariables.appwriteProjectId}</h2>
-      <h2>{envVariables.appwriteDatabaseId}</h2>
-      <h2>{envVariables.appwriteCollectionId}</h2>
-      <h2>{envVariables.appwriteBucketId}</h2>
+  useEffect(() => {
+    authService
+      .getCurrentUser()
+      .then((userData) => dispatch(userData ? login(userData) : logout()))
+      .catch((error) => console.log(error))
+      .finally(() => setLoading(false));
+  }, [dispatch]);
+
+  return loading ? (
+    <LoadingPage />
+  ) : (
+    <>
+      <Header />
+      <main className="mt-32">
+        <Outlet />
+      </main>
+      <Footer />
     </>
   );
 }

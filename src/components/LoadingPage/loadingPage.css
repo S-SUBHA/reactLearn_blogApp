@@ -1,0 +1,36 @@
+.c_loadingPage {
+  border: 4px solid #fff;
+  border-radius: 10%;
+  /* background-color: #fff; */
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+
+  animation-name: loading;
+  animation-duration: 7s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  /* animation-fill-mode: forwards; */
+  /* animation-direction: initial; */
+  /* animation-composition: initial; */
+
+  height: 6em;
+  width: 6em;
+}
+
+@keyframes loading {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+  }
+  33% {
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(180deg);
+  }
+  66% {
+    transform: rotateX(0deg) rotateY(180deg) rotateZ(180deg);
+  }
+  100% {
+    transform: rotateX(180deg) rotateY(180deg) rotateZ(180deg);
+  }
+}

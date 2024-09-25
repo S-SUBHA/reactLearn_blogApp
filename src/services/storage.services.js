@@ -35,7 +35,7 @@ class StorageServices {
       console.log(
         `Error :: Appwrite :: StorageServices :: getImage :: ${error}`
       );
-      return null;
+      return "";
     }
   }
 

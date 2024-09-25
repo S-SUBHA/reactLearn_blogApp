@@ -24,7 +24,7 @@ class AuthService {
       return user;
     } catch (error) {
       console.log(`Error :: Appwrite :: AuthService :: createAccount :: ${error}`);
-      return false;
+      return null;
     }
   }
 
