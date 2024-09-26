@@ -19,7 +19,12 @@ function App() {
     authService
       .getCurrentUser()
       .then((userData) => {
-        dispatch(userData ? login(userData) : logout());
+        if(!userData){
+          dispatch(logout());
+          return;
+        }
+        
+        dispatch(login(userData));
         databaseServices
           .getPosts([Query.equal("userId", [`${userData.$id}`])])
           .then((posts) => dispatch(storeUserPosts(posts)))
