@@ -1,4 +1,4 @@
-import Container from "./container/Container.jsx";
+import Container from "./Container/Container.jsx";
 
 import Footer from "./Footer/Footer.jsx";
 
