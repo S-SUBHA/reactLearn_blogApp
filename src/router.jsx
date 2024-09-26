@@ -77,10 +77,11 @@ export const router = createBrowserRouter([
         path: "my-posts",
         element: (
           <AuthLayout>
-            <UserPostPages/>
+            <UserPostPages />
           </AuthLayout>
-        )
-      }
+        ),
+      },
     ],
+    errorElement: <LoginPage />,
   },
 ]);
