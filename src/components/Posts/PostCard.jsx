@@ -2,9 +2,9 @@
 import { Link } from "react-router-dom";
 import { Image } from "../index.js";
 
-function PostCard({ $id, title, featuredImage }) {
+function PostCard({ $id, title, featuredImage, active = true }) {
   return (
-    <div className="bg-[#ffffff60] rounded-xl">
+    <div className={`${active ? `bg-[#ffffff20]` : `bg-[#ff000040]`} rounded-xl shadow-postCardShadow`}>
       <Link to={`/posts/${$id}`} >
         <div className="w-full h-full p-3 flex flex-col justify-between">
           <Image

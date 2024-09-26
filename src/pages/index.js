@@ -5,6 +5,7 @@ import AllPostPage from "./AllPostsPage.jsx";
 import CreatePostPage from "./CreatePostPage.jsx";
 import EditPostPage from "./EditPostPage.jsx";
 import PostPage from "./PostPage.jsx";
+import UserPostPages from "./UserPostsPage.jsx";
 
 export {
   HomePage,
@@ -14,4 +15,5 @@ export {
   CreatePostPage,
   EditPostPage,
   PostPage,
+  UserPostPages
 };

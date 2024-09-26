@@ -78,14 +78,36 @@ class DatabaseServices {
 
   async getPost(documentId) {
     try {
-      return await this.database.getDocument(
+      const {
+        $id,
+        $createdAt,
+        $updatedAt,
+        $permissions,
+        title,
+        content,
+        featuredImage,
+        status,
+        userId,
+      } = await this.database.getDocument(
         envVariables.appwriteDatabaseId,
         envVariables.appwriteCollectionId,
         documentId
       );
+
+      return {
+        $id,
+        $createdAt,
+        $updatedAt,
+        $permissions,
+        title,
+        content,
+        featuredImage,
+        status,
+        userId,
+      };
     } catch (error) {
       console.log(
-        `Error :: Appwrite :: DatabaseService :: getPost :: ${error}`
+        `Error :: Appwrite :: DatabaseService :: getPost :: ${documentId} :: ${error}`
       );
       return null;
     }
@@ -93,11 +115,37 @@ class DatabaseServices {
 
   async getPosts(queries = [Query.equal("status", ["active"])]) {
     try {
-      return await this.database.listDocuments(
+      const { documents } = await this.database.listDocuments(
         envVariables.appwriteDatabaseId,
         envVariables.appwriteCollectionId,
         queries
       );
+
+      const posts = documents.map(
+        ({
+          $id,
+          $createdAt,
+          $updatedAt,
+          $permissions,
+          title,
+          content,
+          featuredImage,
+          status,
+          userId,
+        }) => ({
+          $id,
+          $createdAt,
+          $updatedAt,
+          $permissions,
+          title,
+          content,
+          featuredImage,
+          status,
+          userId,
+        })
+      );
+
+      return posts;
     } catch (error) {
       console.log(
         `Error :: Appwrite :: DatabaseService :: getActivePosts :: ${error}`

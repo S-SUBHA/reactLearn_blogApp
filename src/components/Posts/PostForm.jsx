@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import databaseServices from "../../services/db.services";
 import storageServices from "../../services/storage.services";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import {
   Button,
@@ -14,6 +14,12 @@ import {
   RTE,
   Select,
 } from "../index.js";
+import {
+  addActivePost,
+  updateActivePost,
+  addUserPost,
+  updateUserPost,
+} from "../../store/features/posts.slice.js";
 
 // TODO: make sure the input 'title' is atmost 36 chars long and the 'content' is 1000 chars long
 export default function PostForm({ post }) {
@@ -33,6 +39,8 @@ export default function PostForm({ post }) {
       },
     });
 
+  const dispatch = useDispatch();
+
   async function handlePostForm(data) {
     // console.log(data);
     // return;
@@ -51,6 +59,8 @@ export default function PostForm({ post }) {
           )
         );
         console.log(imageUploadError.message);
+        // setLoading(false);
+        // return;
       }
 
       if (newImage) await storageServices.deleteImage(post.featuredImage);
@@ -59,6 +69,12 @@ export default function PostForm({ post }) {
         ...data,
         featuredImage: newImage?.$id || post.featuredImage,
       });
+
+      dispatch(updateUserPost({ postId: updatedPost.$id, post: updatedPost }));
+      if (updatedPost.status === "active" || post.status === "active")
+        dispatch(
+          updateActivePost({ postId: updatedPost.$id, post: updatedPost })
+        );
 
       setLoading(false);
       if (updatedPost) navigate(`/posts/${updatedPost.$id}`);
@@ -74,6 +90,7 @@ export default function PostForm({ post }) {
         console.log(duplicatePost);
 
         setInputError(new Error("Post with same title already exists!"));
+        setLoading(false);
         return;
       }
 
@@ -88,6 +105,7 @@ export default function PostForm({ post }) {
           )
         );
         console.log(imageUploadError.message);
+        setLoading(false);
         return;
       }
 
@@ -99,6 +117,9 @@ export default function PostForm({ post }) {
         status: data.status,
         userId: userData.$id,
       });
+
+      dispatch(addUserPost(newPost));
+      newPost.status === "active" && dispatch(addActivePost(newPost));
 
       setLoading(false);
       if (newPost) navigate("/");

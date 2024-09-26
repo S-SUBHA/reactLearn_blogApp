@@ -8,6 +8,7 @@ import {
   LoginPage,
   PostPage,
   SignupPage,
+  UserPostPages,
 } from "./pages/index.js";
 import { AuthLayout } from "./components/index.js";
 
@@ -72,6 +73,14 @@ export const router = createBrowserRouter([
           </AuthLayout>
         ),
       },
+      {
+        path: "my-posts",
+        element: (
+          <AuthLayout>
+            <UserPostPages/>
+          </AuthLayout>
+        )
+      }
     ],
   },
 ]);
