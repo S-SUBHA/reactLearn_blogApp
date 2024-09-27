@@ -18,7 +18,7 @@ export const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "/home",
+        path: "/",
         element: (
           <AuthLayout>
             <HomePage />
@@ -77,10 +77,10 @@ export const router = createBrowserRouter([
         path: "my-posts",
         element: (
           <AuthLayout>
-            <UserPostPages />
+            <UserPostPages/>
           </AuthLayout>
-        ),
-      },
+        )
+      }
     ],
   },
 ]);
