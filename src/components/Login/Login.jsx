@@ -24,7 +24,7 @@ function Login() {
       if (session) {
         const userData = await authService.getCurrentUser();
         if (userData) dispatch(loginReducer(userData));
-        navigate("/");
+        navigate("/home");
       }
     } catch (error) {
       setError(error.message);
