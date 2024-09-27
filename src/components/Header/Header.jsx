@@ -113,7 +113,7 @@ function Header() {
 
             {authStatus && (
               <li>
-                <div className="flex items-center">
+                <div className="flex items-center" onClick={() => setSidebarActive(prev => !prev)}>
                   <LogoutBtn className="mx-4 text-xl text-red-600 hover:text-[#ff000070] px-2 sm:px-0 py-3 sm:py-0" />
                 </div>
               </li>
